@@ -1,12 +1,12 @@
-# pizza.py
+from ingredientes import Ingredientes
 
+#1. clase para crear pizza, con sus atributos de clase.
 class Pizza:
-    # Atributos de clase
-    ingredientes_proteicos = ["pollo", "vacuno", "carne vegetal"]
-    ingredientes_vegetales = ["tomate", "aceitunas", "champiñones"]
-    tipos_masa = ["tradicional", "delgada"]
     precio = 10000
-    tamanio = "familiar"
+    formato = "familiar"
+    ingredientes_proteicos = Ingredientes.proteicos
+    ingredientes_vegetales = Ingredientes.vegetales
+    tipos_masa = Ingredientes.masa
 
     def __init__(self):
         # Atributos de instancia
@@ -20,21 +20,44 @@ class Pizza:
     def validar_elemento(elemento, lista_valores):
         return elemento in lista_valores
 
+    # Método para mostrar las opciones de ingredientes.
+    def mostrar_opciones(self, opciones):
+        for k, v in opciones.items():
+            print(f"{k}. {v}")
+
     # Método para realizar el pedido
     def realizar_pedido(self):
-        print("Realiza tu pedido de pizza:\n")
+        print("\nRealiza tu pedido de pizza:")
 
-        self.ingrediente_proteico = input("Ingresa un ingrediente proteico: ").lower()
-        vegetal_1 = input("Ingresa el primer ingrediente vegetal: ").lower()
-        vegetal_2 = input("Ingresa el segundo ingrediente vegetal: ").lower()
-        self.tipo_masa = input("Ingresa el tipo de masa (tradicional o delgada): ").lower()
+        print("\nSelecciona un ingrediente proteico:")
+        self.mostrar_opciones(Pizza.ingredientes_proteicos)
+        opcion_proteico = int(input("Ingrese el número de la opción: "))
+        if self.validar_elemento(opcion_proteico, Pizza.ingredientes_proteicos):
+            self.ingrediente_proteico = Pizza.ingredientes_proteicos[opcion_proteico]
 
-        self.ingredientes_vegetales = [vegetal_1, vegetal_2]
+        print("\nSelecciona el primer ingrediente vegetal:")
+        self.mostrar_opciones(Pizza.ingredientes_vegetales)
+        opcion_veg1 = int(input("Ingrese el número de la opción: "))
+        print("\nSelecciona el segundo ingrediente vegetal:")
+        self.mostrar_opciones(Pizza.ingredientes_vegetales)
+        opcion_veg2 = int(input("Ingrese el número de la opción: "))
 
-        # Validaciones
-        es_valido_proteico = Pizza.validar_elemento(self.ingrediente_proteico, Pizza.ingredientes_proteicos)
-        es_valido_vegetal_1 = Pizza.validar_elemento(vegetal_1, Pizza.ingredientes_vegetales)
-        es_valido_vegetal_2 = Pizza.validar_elemento(vegetal_2, Pizza.ingredientes_vegetales)
-        es_valido_masa = Pizza.validar_elemento(self.tipo_masa, Pizza.tipos_masa)
+        if (self.validar_elemento(opcion_veg1, Pizza.ingredientes_vegetales) and
+            self.validar_elemento(opcion_veg2, Pizza.ingredientes_vegetales)):
+            self.ingredientes_vegetales = [
+                Pizza.ingredientes_vegetales[opcion_veg1],
+                Pizza.ingredientes_vegetales[opcion_veg2]
+            ]
 
-        self.valida = all([es_valido_proteico, es_valido_vegetal_1, es_valido_vegetal_2, es_valido_masa])
+        print("\nSelecciona el tipo de masa:")
+        self.mostrar_opciones(Pizza.tipos_masa)
+        opcion_masa = int(input("Ingrese el número de la opción: "))
+        if self.validar_elemento(opcion_masa, Pizza.tipos_masa):
+            self.tipo_masa = Pizza.tipos_masa[opcion_masa]
+
+        # Validación final
+        self.valida = all([
+            self.ingrediente_proteico is not None,
+            len(self.ingredientes_vegetales) == 2,
+            self.tipo_masa is not None
+        ])
