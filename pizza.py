@@ -15,49 +15,34 @@ class Pizza:
         self.tipo_masa = None
         self.valida = False
 
-    # Método estático para validar un elemento en una lista
+    #2. Método estático para validar un elemento en una lista
     @staticmethod
     def validar_elemento(elemento, lista_valores):
         return elemento in lista_valores
 
-    # Método para mostrar las opciones de ingredientes.
-    def mostrar_opciones(self, opciones):
-        for k, v in opciones.items():
-            print(f"{k}. {v}")
-
-    # Método para realizar el pedido
+    #3. Método para realizar un pedido
     def realizar_pedido(self):
-        print("\nRealiza tu pedido de pizza:")
+        print("Realiza tu pedido de pizza:\n")
+        #Muestra opciones y pide ingrediente proteico
+        print("Ingredientes proteicos disponibles: ", Pizza.ingredientes_proteicos)
+        self.ingrediente_proteico = input("Ingresa un ingrediente proteico: ").lower()
+        #Muestra opciones y pide ingredientes vegetales
+        print("Ingredientes vegetales disponibles: ", Pizza.ingredientes_vegetales)
+        vegetal_1 = input("Ingresa el primer ingrediente vegetal: ").lower()
+        vegetal_2 = input("Ingresa el segundo ingrediente vegetal: ").lower()
+        #Agrega vegetales a una lista.
+        self.ingredientes_vegetales = [vegetal_1, vegetal_2]
+        #Muestra opciones y pide seleccionar tipo de masa.
+        print("Tipos de masa disponibles: ", Pizza.tipos_masa)
+        self.tipo_masa = input("Ingresa el tipo de masa (tradicional o delgada): ").lower()
 
-        print("\nSelecciona un ingrediente proteico:")
-        self.mostrar_opciones(Pizza.ingredientes_proteicos)
-        opcion_proteico = int(input("Ingrese el número de la opción: "))
-        if self.validar_elemento(opcion_proteico, Pizza.ingredientes_proteicos):
-            self.ingrediente_proteico = Pizza.ingredientes_proteicos[opcion_proteico]
+    #4. Validación de la pizza:
+        #Validaciones de los ingredientes
+        validacion_proteica = Pizza.validar_elemento(self.ingrediente_proteico, Pizza.ingredientes_proteicos)
+        validacion_vegetal_1 = Pizza.validar_elemento(vegetal_1, Pizza.ingredientes_vegetales)
+        validacion_vegetal_2 = Pizza.validar_elemento(vegetal_2, Pizza.ingredientes_vegetales)
+        validacion_masa = Pizza.validar_elemento(self.tipo_masa, Pizza.tipos_masa)
+        
+        #Si todos(all) los elementos son True, valida es True (pizza valida).
+        self.valida = all([validacion_proteica, validacion_vegetal_1, validacion_vegetal_2, validacion_masa])
 
-        print("\nSelecciona el primer ingrediente vegetal:")
-        self.mostrar_opciones(Pizza.ingredientes_vegetales)
-        opcion_veg1 = int(input("Ingrese el número de la opción: "))
-        print("\nSelecciona el segundo ingrediente vegetal:")
-        self.mostrar_opciones(Pizza.ingredientes_vegetales)
-        opcion_veg2 = int(input("Ingrese el número de la opción: "))
-
-        if (self.validar_elemento(opcion_veg1, Pizza.ingredientes_vegetales) and
-            self.validar_elemento(opcion_veg2, Pizza.ingredientes_vegetales)):
-            self.ingredientes_vegetales = [
-                Pizza.ingredientes_vegetales[opcion_veg1],
-                Pizza.ingredientes_vegetales[opcion_veg2]
-            ]
-
-        print("\nSelecciona el tipo de masa:")
-        self.mostrar_opciones(Pizza.tipos_masa)
-        opcion_masa = int(input("Ingrese el número de la opción: "))
-        if self.validar_elemento(opcion_masa, Pizza.tipos_masa):
-            self.tipo_masa = Pizza.tipos_masa[opcion_masa]
-
-        # Validación final
-        self.valida = all([
-            self.ingrediente_proteico is not None,
-            len(self.ingredientes_vegetales) == 2,
-            self.tipo_masa is not None
-        ])
