@@ -7,6 +7,7 @@ class Pizza:
     ingredientes_proteicos = Ingredientes.proteicos
     ingredientes_vegetales = Ingredientes.vegetales
     tipos_masa = Ingredientes.masa
+    lista_salsas = Ingredientes.salsas
 
     def __init__(self):
         # Atributos de instancia
@@ -22,7 +23,7 @@ class Pizza:
 
     #3. Método para realizar un pedido
     def realizar_pedido(self):
-        print("Realiza tu pedido de pizza:\n")
+        print("--Realiza tu pedido de pizza--")
         #Muestra opciones y pide ingrediente proteico
         print("Ingredientes proteicos disponibles: ", Pizza.ingredientes_proteicos)
         self.ingrediente_proteico = input("Ingresa un ingrediente proteico: ").lower()
